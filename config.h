@@ -33,6 +33,10 @@ static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%"
 static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
 static const char *light_up[] = {"/usr/bin/brightnessctl", "s", "20+", NULL};
 static const char *light_down[] = {"/usr/bin/brightnessctl", "s", "20-", NULL};
+static const char *Ppause[] = {"/usr/bin/playerctl", "play-pause", NULL};
+static const char *Pplay[] = {"/usr/bin/playerctl", "play-pause", NULL};
+static const char *audionext[] = {"/usr/bin/playerctl", "next", NULL};
+static const char *audioprev[] = {"/usr/bin/playerctl", "previous", NULL};
 static const int new_window_attach_on_end = 0; /*  1 means the new window will attach on the end; 0 means the new window will attach on the front,default is front */
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
@@ -89,6 +93,7 @@ static const Rule rules[] = {
     /* class      instance    title       tags mask     iscentered   isfloating   monitor */
     { "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
     { "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
+    { "Firefox",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           -1 },
     { "eww",      NULL,       NULL,       0,            0,           1,           -1 },
     { "pavucontrol",      NULL,       NULL,       0,            0,           1,           -1 },
     { "feh",      NULL,       NULL,       0,            0,           1,           -1 },
@@ -143,9 +148,13 @@ static const Key keys[] = {
     /* modifier                         key         function        argument */
 
     // brightness and audio 
-    {0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol}},
+  {0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol}},
 	{0,                       XF86XK_AudioMute, spawn, {.v = mutevol }},
 	{0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol}},
+  {0,                       XF86XK_AudioPlay, spawn, {.v = Pplay}},
+  {0,                       XF86XK_AudioPause, spawn, {.v = Ppause}},
+  {0,                       XF86XK_AudioNext, spawn, {.v = audionext}},
+  {0,                       XF86XK_AudioPrev, spawn, {.v = audioprev}},
 	{0,				XF86XK_MonBrightnessUp,		spawn,	{.v = light_up}},
 	{0,				XF86XK_MonBrightnessDown,	spawn,	{.v = light_down}},
 
@@ -247,8 +256,8 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,                 XK_r,       restart,           {0} },
 
     // hide & restore windows
-    { MODKEY,                           XK_e,       hidewin,        {0} },
-    { MODKEY|ShiftMask,                 XK_e,       restorewin,     {0} },
+    { MODKEY,                           XK_s,       hidewin,        {0} },
+    { MODKEY|ShiftMask,                 XK_s,       restorewin,     {0} },
 
     TAGKEYS(                            XK_z,                       0)
     TAGKEYS(                            XK_x,                       1)

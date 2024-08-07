@@ -1,0 +1,147 @@
+From 0b01a947eeb893b85576e0117e98e455ff770558 Mon Sep 17 00:00:00 2001
+From: stojshic <stojshic@arch.pc>
+Date: Fri, 9 Feb 2024 20:56:34 +0100
+Subject: [PATCH] Two Monitor Setup
+
+---
+ dwm.c | 65 ++++++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 46 insertions(+), 19 deletions(-)
+
+diff --git a/dwm.c b/dwm.c
+index f1d86b2..2234780 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -160,7 +160,7 @@ static Monitor *createmon(void);
+ static void destroynotify(XEvent *e);
+ static void detach(Client *c);
+ static void detachstack(Client *c);
+-static Monitor *dirtomon(int dir);
++// static Monitor *dirtomon(int dir);
+ static void drawbar(Monitor *m);
+ static void drawbars(void);
+ static void enternotify(XEvent *e);
+@@ -194,6 +194,7 @@ static void resizeclient(Client *c, int x, int y, int w, int h);
+ static void resizemouse(const Arg *arg);
+ static void restack(Monitor *m);
+ static void run(void);
++static void runAutostart(void);
+ static void scan(void);
+ static int sendevent(Client *c, Atom proto);
+ static void sendmon(Client *c, Monitor *m);
+@@ -680,6 +681,7 @@ detachstack(Client *c)
+ 	}
+ }
+ 
++/*
+ Monitor *
+ dirtomon(int dir)
+ {
+@@ -694,7 +696,7 @@ dirtomon(int dir)
+ 		for (m = mons; m->next != selmon; m = m->next);
+ 	return m;
+ }
+-
++*/
+ void
+ drawbar(Monitor *m)
+ {
+@@ -736,7 +738,8 @@ drawbar(Monitor *m)
+ 
+ 	if ((w = m->ww - tw - x) > bh) {
+ 		if (m->sel) {
+-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
++			drw_setscheme(drw, scheme[SchemeNorm]);
++			// drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+ 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+ 			if (m->sel->isfloating)
+ 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+@@ -822,17 +825,22 @@ focusin(XEvent *e)
+ }
+ 
+ void
+-focusmon(const Arg *arg)
+-{
+-	Monitor *m;
++focusmon(const Arg *arg) {
++    Monitor *m = NULL;
+ 
+-	if (!mons->next)
+-		return;
+-	if ((m = dirtomon(arg->i)) == selmon)
+-		return;
+-	unfocus(selmon->sel, 0);
+-	selmon = m;
+-	focus(NULL);
++    if (!mons->next)
++        return;
++
++    if (arg->i > 0) {
++        m = mons->next;
++    } else if (arg->i < 0 && mons->next) {
++        m = mons;
++    }
++
++    if (m) {
++        selmon = m;
++        focus(NULL);
++    }
+ }
+ 
+ void
+@@ -1390,6 +1398,12 @@ run(void)
+ 			handler[ev.type](&ev); /* call handler */
+ }
+ 
++void
++runAutostart(void) {
++	system("cd ~/.dwm; ./autostart_blocking.sh");
++	system("cd ~/.dwm; ./autostart.sh &");
++}
++
+ void
+ scan(void)
+ {
+@@ -1676,14 +1690,26 @@ tag(const Arg *arg)
+ 	}
+ }
+ 
+-void
+-tagmon(const Arg *arg)
+-{
+-	if (!selmon->sel || !mons->next)
+-		return;
+-	sendmon(selmon->sel, dirtomon(arg->i));
++void tagmon(const Arg *arg) {
++    if (!selmon->sel || !mons->next)
++        return;
++
++    Monitor *m;
++
++    if (arg->i > 0) {
++        m = mons->next;  // Move to mon1
++    } else if (arg->i < 0 && mons->next) {
++        m = mons;  // Move to mon2
++    } else {
++        return; // Do nothing for arg->i == 0
++    }
++
++    sendmon(selmon->sel, m);
++    focus(NULL);
++    arrange(selmon);
+ }
+ 
++
+ void
+ tile(Monitor *m)
+ {
+@@ -2158,6 +2184,7 @@ main(int argc, char *argv[])
+ 		die("pledge");
+ #endif /* __OpenBSD__ */
+ 	scan();
++	runAutostart();
+ 	run();
+ 	cleanup();
+ 	XCloseDisplay(dpy);
+-- 
+2.43.0
+
