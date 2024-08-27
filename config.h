@@ -26,7 +26,7 @@ static const int vertpadtab         = 35;
 static const int horizpadtabi       = 15;
 static const int horizpadtabo       = 15;
 static const int scalepreview       = 4;
-static const int tag_preview        = 0;        /* 1 means enable, 0 is off */
+static const int tag_preview        = 1;        /* 1 means enable, 0 is off */
 static const int colorfultag        = 1;        /* 0 means use SchemeSel for selected non vacant tag */
 static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
 static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
@@ -41,7 +41,7 @@ static const int new_window_attach_on_end = 0; /*  1 means the new window will a
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
 
-static const char *fonts[]          = {"Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=19"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=15" };
+static const char *fonts[]          = {"Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12" };
 
 // theme
 #include "themes/catppuccin.h"
@@ -100,6 +100,8 @@ static const Rule rules[] = {
     { "imv",      NULL,       NULL,       0,            0,           1,           -1 },
     { "imv-dir",      NULL,       NULL,       0,            0,           1,           -1 },
     { "solanum",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "Nitrogen",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "YouTube Music",      NULL,       NULL,       0,            0,           1,           -1 },
 };
 
 /* layout(s) */
@@ -165,6 +167,7 @@ static const Key keys[] = {
         SHCMD("flameshot gui -p ~/Pictures/Screenshots")},
 
     { MODKEY,                           XK_d,       spawn,          SHCMD("rofi -show drun") },
+    { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
     { MODKEY,                           XK_Return,  spawn,            SHCMD("kitty")},
     { MODKEY,                           XK_o,  spawn,            SHCMD("firefox")},
     { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
