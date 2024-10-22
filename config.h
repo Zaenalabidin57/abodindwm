@@ -41,10 +41,11 @@ static const int new_window_attach_on_end = 0; /*  1 means the new window will a
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
 
-static const char *fonts[]          = {"Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12" };
+static const char *fonts[]          = {"Monocraft Nerd Font:style:Light:size=12","Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12", "Noto Sans CJK JP:style=Regular:size=12", "Noto Sans JP Medium:style=Mediun:size=12" };
 
 // theme
 #include "themes/catppuccin.h"
+/*#include "themes/dracula.h"*/
 
 static const char *colors[][3]      = {
     /*                     fg       bg      border */
@@ -102,6 +103,11 @@ static const Rule rules[] = {
     { "solanum",      NULL,       NULL,       0,            0,           1,           -1 },
     { "Nitrogen",      NULL,       NULL,       0,            0,           1,           -1 },
     { "YouTube Music",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "easyeffects",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "photoshop.exe",      "photoshop.exe",       NULL,       0,            0,           0,           -1 },
+    { "mpv",      "gl",       "rrat.mp4 - mpv",       0,            0,           0,           -1 },
+    { "mpv",      "gl",       "nene.mp4 - mpv",       0,            0,           0,           1 },
+
 };
 
 /* layout(s) */
@@ -164,16 +170,19 @@ static const Key keys[] = {
     {MODKEY|ControlMask,                XK_Print,       spawn,
         SHCMD("maim | xclip -selection clipboard -t image/png")},
     {0,                            XK_Print,       spawn,
-        SHCMD("flameshot gui -p ~/Pictures/Screenshots")},
+        SHCMD("flameshot gui")},
 
     { MODKEY,                           XK_d,       spawn,          SHCMD("rofi -show drun") },
     { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
     { MODKEY,                           XK_Return,  spawn,            SHCMD("kitty")},
+    { MODKEY|ShiftMask,                           XK_Return,  spawn,            SHCMD("st")},
     { MODKEY,                           XK_o,  spawn,            SHCMD("firefox")},
     { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
     { MODKEY,                           XK_y,  spawn,            SHCMD("clipcat-menu")},
     { MODKEY,                           XK_m,  spawn,            SHCMD("neovide")},
     { MODKEY|ShiftMask,                 XK_e,  spawn,            SHCMD("kitty ~/.config/hypr/exit.sh")},
+    { MODKEY|ShiftMask,                 XK_g,  spawn,            SHCMD("xcolor | xclip")},
+    { MODKEY|ShiftMask,                 XK_p,  spawn,            SHCMD("i3lock-fancy-dualmonitor -p")},
 
     // toggle stuff
     { MODKEY,                           XK_p,       togglebar,      {0} },
@@ -188,8 +197,8 @@ static const Key keys[] = {
     { MODKEY,                           XK_d,       incnmaster,     {.i = -1 } },
 
     // shift view
-    { MODKEY,                           XK_Left,    shiftview,      {.i = -1 } },
-    { MODKEY,                           XK_Right,   shiftview,      {.i = +1 } },
+    { MODKEY|ControlMask,                           XK_Left,    shiftview,      {.i = -1 } },
+    { MODKEY|ControlMask,                           XK_Right,   shiftview,      {.i = +1 } },
 
     // change m,cfact sizes 
     { MODKEY,                           XK_h,       setmfact,       {.f = -0.05} },
@@ -295,12 +304,12 @@ static const Button buttons[] = {
     * to control these separately (i.e. to retain the feature to move a tiled window
     * into a floating position).
     */
-    /*{ ClkClientWin,         MODKEY,         Button1,        moveorplace,    {.i = 0} },*/
-    /*{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },*/
-    /*{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },*/
-    { ClkClientWin,         Mod1Mask|ControlMask,         Button1,        moveorplace,    {.i = 0} },
-    { ClkClientWin,         Mod1Mask|ControlMask,         Button2,        togglefloating, {0} },
-    { ClkClientWin,         Mod1Mask|ControlMask,         Button3,        resizemouse,    {0} },
+    { ClkClientWin,         MODKEY,         Button1,        moveorplace,    {.i = 0} },
+    { ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+    { ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+    /*{ ClkClientWin,         Mod1Mask|ControlMask,         Button1,        moveorplace,    {.i = 0} },*/
+    /*{ ClkClientWin,         Mod1Mask|ControlMask,         Button2,        togglefloating, {0} },*/
+    /*{ ClkClientWin,         Mod1Mask|ControlMask,         Button3,        resizemouse,    {0} },*/
     /*{ ClkClientWin,         ControlMask,    Button1,        dragmfact,      {0} },*/
     /*{ ClkClientWin,         ControlMask,    Button3,        dragcfact,      {0} },*/
     { ClkTagBar,            0,              Button1,        view,           {0} },
