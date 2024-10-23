@@ -26,21 +26,26 @@ static const int vertpadtab         = 35;
 static const int horizpadtabi       = 15;
 static const int horizpadtabo       = 15;
 static const int scalepreview       = 4;
-static const int tag_preview        = 0;        /* 1 means enable, 0 is off */
+static const int tag_preview        = 1;        /* 1 means enable, 0 is off */
 static const int colorfultag        = 1;        /* 0 means use SchemeSel for selected non vacant tag */
 static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
 static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
 static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
-static const char *light_up[] = {"/usr/bin/light", "-A", "5", NULL};
-static const char *light_down[] = {"/usr/bin/light", "-U", "5", NULL};
+static const char *light_up[] = {"/usr/bin/brightnessctl", "s", "20+", NULL};
+static const char *light_down[] = {"/usr/bin/brightnessctl", "s", "20-", NULL};
+static const char *Ppause[] = {"/usr/bin/playerctl", "play-pause", NULL};
+static const char *Pplay[] = {"/usr/bin/playerctl", "play-pause", NULL};
+static const char *audionext[] = {"/usr/bin/playerctl", "next", NULL};
+static const char *audioprev[] = {"/usr/bin/playerctl", "previous", NULL};
 static const int new_window_attach_on_end = 0; /*  1 means the new window will attach on the end; 0 means the new window will attach on the front,default is front */
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
 
-static const char *fonts[]          = {"Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=19" };
+static const char *fonts[]          = {"Monocraft Nerd Font:style:Light:size=12","Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12", "Noto Sans CJK JP:style=Regular:size=12", "Noto Sans JP Medium:style=Mediun:size=12" };
 
 // theme
-#include "themes/onedark.h"
+#include "themes/catppuccin.h"
+/*#include "themes/dracula.h"*/
 
 static const char *colors[][3]      = {
     /*                     fg       bg      border */
@@ -62,9 +67,10 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static char *tags[] = {"", "", "", "", ""};
+/*static char *tags[] = {"", "", "", "", ""};*/
+static char *tags[] = {"1", "2", "3", "4", "5",};
 
-static const char* eww[] = { "eww", "open" , "eww", NULL };
+static const char* eww[] = { "solanum", NULL };
 
 static const Launcher launchers[] = {
     /* command     name to display */
@@ -88,7 +94,20 @@ static const Rule rules[] = {
     /* class      instance    title       tags mask     iscentered   isfloating   monitor */
     { "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
     { "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
+    { "Firefox",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           -1 },
     { "eww",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "pavucontrol",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "feh",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "imv",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "imv-dir",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "solanum",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "Nitrogen",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "YouTube Music",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "easyeffects",      NULL,       NULL,       0,            0,           1,           -1 },
+    { "photoshop.exe",      "photoshop.exe",       NULL,       0,            0,           0,           -1 },
+    { "mpv",      "gl",       "rrat.mp4 - mpv",       0,            0,           0,           -1 },
+    { "mpv",      "gl",       "nene.mp4 - mpv",       0,            0,           0,           1 },
+
 };
 
 /* layout(s) */
@@ -137,23 +156,36 @@ static const Key keys[] = {
     /* modifier                         key         function        argument */
 
     // brightness and audio 
-    {0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol}},
+  {0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol}},
 	{0,                       XF86XK_AudioMute, spawn, {.v = mutevol }},
 	{0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol}},
+  {0,                       XF86XK_AudioPlay, spawn, {.v = Pplay}},
+  {0,                       XF86XK_AudioPause, spawn, {.v = Ppause}},
+  {0,                       XF86XK_AudioNext, spawn, {.v = audionext}},
+  {0,                       XF86XK_AudioPrev, spawn, {.v = audioprev}},
 	{0,				XF86XK_MonBrightnessUp,		spawn,	{.v = light_up}},
 	{0,				XF86XK_MonBrightnessDown,	spawn,	{.v = light_down}},
 
     // screenshot fullscreen and cropped
-    {MODKEY|ControlMask,                XK_u,       spawn,
+    {MODKEY|ControlMask,                XK_Print,       spawn,
         SHCMD("maim | xclip -selection clipboard -t image/png")},
-    {MODKEY,                            XK_u,       spawn,
-        SHCMD("maim --select | xclip -selection clipboard -t image/png")},
+    {0,                            XK_Print,       spawn,
+        SHCMD("flameshot gui")},
 
-    { MODKEY,                           XK_c,       spawn,          SHCMD("rofi -show drun") },
-    { MODKEY,                           XK_Return,  spawn,            SHCMD("st")},
+    { MODKEY,                           XK_d,       spawn,          SHCMD("rofi -show drun") },
+    { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
+    { MODKEY,                           XK_Return,  spawn,            SHCMD("kitty")},
+    { MODKEY|ShiftMask,                           XK_Return,  spawn,            SHCMD("st")},
+    { MODKEY,                           XK_o,  spawn,            SHCMD("firefox")},
+    { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
+    { MODKEY,                           XK_y,  spawn,            SHCMD("clipcat-menu")},
+    { MODKEY,                           XK_m,  spawn,            SHCMD("neovide")},
+    { MODKEY|ShiftMask,                 XK_e,  spawn,            SHCMD("kitty ~/.config/hypr/exit.sh")},
+    { MODKEY|ShiftMask,                 XK_g,  spawn,            SHCMD("xcolor | xclip")},
+    { MODKEY|ShiftMask,                 XK_p,  spawn,            SHCMD("i3lock-fancy-dualmonitor -p")},
 
     // toggle stuff
-    { MODKEY,                           XK_b,       togglebar,      {0} },
+    { MODKEY,                           XK_p,       togglebar,      {0} },
     { MODKEY|ControlMask,               XK_t,       togglegaps,     {0} },
     { MODKEY|ShiftMask,                 XK_space,   togglefloating, {0} },
     { MODKEY,                           XK_f,       togglefullscr,  {0} },
@@ -165,8 +197,8 @@ static const Key keys[] = {
     { MODKEY,                           XK_d,       incnmaster,     {.i = -1 } },
 
     // shift view
-    { MODKEY,                           XK_Left,    shiftview,      {.i = -1 } },
-    { MODKEY,                           XK_Right,   shiftview,      {.i = +1 } },
+    { MODKEY|ControlMask,                           XK_Left,    shiftview,      {.i = -1 } },
+    { MODKEY|ControlMask,                           XK_Right,   shiftview,      {.i = +1 } },
 
     // change m,cfact sizes 
     { MODKEY,                           XK_h,       setmfact,       {.f = -0.05} },
@@ -208,7 +240,7 @@ static const Key keys[] = {
     // layout
     { MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },
     { MODKEY|ShiftMask,                 XK_f,       setlayout,      {.v = &layouts[1]} },
-    { MODKEY,                           XK_m,       setlayout,      {.v = &layouts[2]} },
+    //{ MODKEY,                           XK_m,       setlayout,      {.v = &layouts[2]} },
     { MODKEY|ControlMask,               XK_g,       setlayout,      {.v = &layouts[10]} },
     { MODKEY|ControlMask|ShiftMask,     XK_t,       setlayout,      {.v = &layouts[13]} },
     { MODKEY,                           XK_space,   setlayout,      {0} },
@@ -223,7 +255,7 @@ static const Key keys[] = {
 
     // change border size
     { MODKEY|ShiftMask,                 XK_minus,   setborderpx,    {.i = -1 } },
-    { MODKEY|ShiftMask,                 XK_p,       setborderpx,    {.i = +1 } },
+    { MODKEY|ShiftMask,                 XK_plus,       setborderpx,    {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_w,       setborderpx,    {.i = default_border } },
 
     // kill dwm
@@ -236,14 +268,14 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,                 XK_r,       restart,           {0} },
 
     // hide & restore windows
-    { MODKEY,                           XK_e,       hidewin,        {0} },
-    { MODKEY|ShiftMask,                 XK_e,       restorewin,     {0} },
+    { MODKEY,                           XK_s,       hidewin,        {0} },
+    { MODKEY|ShiftMask,                 XK_s,       restorewin,     {0} },
 
-    TAGKEYS(                            XK_1,                       0)
-    TAGKEYS(                            XK_2,                       1)
-    TAGKEYS(                            XK_3,                       2)
-    TAGKEYS(                            XK_4,                       3)
-    TAGKEYS(                            XK_5,                       4)
+    TAGKEYS(                            XK_z,                       0)
+    TAGKEYS(                            XK_x,                       1)
+    TAGKEYS(                            XK_c,                       2)
+    TAGKEYS(                            XK_v,                       3)
+    TAGKEYS(                            XK_b,                       4)
     TAGKEYS(                            XK_6,                       5)
     TAGKEYS(                            XK_7,                       6)
     TAGKEYS(                            XK_8,                       7)
