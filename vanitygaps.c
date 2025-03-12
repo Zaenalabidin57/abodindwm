@@ -1,4 +1,45 @@
-/* Settings */
+#include "functions.h"
+/*
+ * Scroll tiling layout + gaps
+ * Windows are arranged horizontally with scrolling behavior
+ */
+void
+scroll_tiling(Monitor *m)
+{
+	unsigned int i, n;
+	int oh, ov, ih, iv;
+	int mx = 0, my = 0, mw = 0;
+	Client *c;
+
+	/* Get gaps and client count */
+	getgaps(m, &oh, &ov, &ih, &iv, &n);
+	if (n == 0)
+		return;
+
+	/* Initialize window position */
+	mx = m->wx + ov;
+	my = m->wy + oh;
+
+	/* Calculate base window width */
+	int base_width = (m->ww - 2*ov) / 2; // Default to half screen width
+
+	/* Layout all windows horizontally */
+	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		mw = MIN(base_width, m->ww - 2*ov); // Use minimum of base_width or available width
+		
+		/* If this is not the first window and there's a previous window, position it after the previous one */
+		if (i > 0) {
+			Client *pc;
+			int prev_x = mx;
+			for (pc = nexttiled(m->clients); pc != c; pc = nexttiled(pc->next))
+				prev_x += WIDTH(pc) + iv;
+			mx = prev_x;
+		}
+
+		/* Resize the window */
+		resize(c, mx, my, mw - (2*c->bw), m->wh - 2*oh - (2*c->bw), 0);
+	}
+}
 #if !PERTAG_PATCH
 static int enablegaps = 1;
 #endif // PERTAG_PATCH

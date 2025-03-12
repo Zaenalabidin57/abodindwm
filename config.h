@@ -123,6 +123,7 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
+    { "[S]",      scroll_tiling },    /* new scroll tiling layout */
     { "[\\]",     dwindle },
     { "><>",      NULL },    /* no layout function means floating behavior */
     { "[M]",      monocle },

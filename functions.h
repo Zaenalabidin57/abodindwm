@@ -8,6 +8,7 @@ static void incrovgaps(const Arg *arg);
 static void incrihgaps(const Arg *arg);
 static void incrivgaps(const Arg *arg);
 static void togglegaps(const Arg *arg);
+static void scroll_tiling(Monitor *m );
 /* Layouts (delete the ones you do not need) */
 static void bstack(Monitor *m);
 static void bstackhoriz(Monitor *m);
