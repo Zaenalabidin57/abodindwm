@@ -8,6 +8,10 @@ interval=0
 # load colors
 . ~/shigure/abodindwm/scripts/bar_themes/catppuccin
 
+temperature() {
+  printf "^c$white^ ^b$grey^ $(cat /sys/class/hwmon/hwmon0/temp)°C"  
+}
+
 cpu() {
   cpu_val=$(grep -o "^[^ ]*" /proc/loadavg)
 
@@ -29,12 +33,17 @@ pkg_updates() {
 
 battery() {
   get_capacity="$(cat /sys/class/power_supply/BAT0/capacity)"
-  printf "^c$blue^   $get_capacity"
+  if [ "$get_capacity" -eq 100 ]; then
+    printf " "
+  else
+    printf "^c$blue^   $get_capacity"
+  fi
 }
 
 brightness() {
-  printf "^c$red^   "
-  printf "^c$red^%.0f\n" $(cat /sys/class/backlight/*/brightness)
+  prostate=$(($(cat /sys/class/backlight/*/brightness) * 100 / 255))
+  printf "^c$blue^   "
+  printf "^c$blue^%.0f\n" $prostate
 }
 
 mem() {
