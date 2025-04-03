@@ -71,7 +71,7 @@ static const char *colors[][3]      = {
 /*static char *tags[] = {"", "", "", "", ""};*/
 static char *tags[] = {"1", "2", "3", "4", "5",};
 
-static const char* eww[] = { "solanum", NULL };
+static const char* eww[] = { "youtube-music", NULL };
 
 static const Launcher launchers[] = {
     /* command     name to display */
@@ -94,8 +94,8 @@ static const Rule rules[] = {
      */
     /* class      instance    title       tags mask     iscentered   isfloating   monitor */
     { "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
-    { "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
-    { "Firefox",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           -1 },
+    { "zen-browser",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
+    { "zen-browser",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           -1 },
     { "eww",      NULL,       NULL,       0,            0,           1,           -1 },
     { "pavucontrol",      NULL,       NULL,       0,            0,           1,           -1 },
     { "feh",      NULL,       NULL,       0,            0,           1,           -1 },
@@ -175,7 +175,7 @@ static const Key keys[] = {
 
     { MODKEY,                           XK_d,       spawn,          SHCMD("rofi -show drun") },
     { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
-    { MODKEY,                           XK_Return,  spawn,            SHCMD("st -g 130x50+0+300")},
+    { MODKEY,                           XK_Return,  spawn,            SHCMD("st -g 80x24+0+300")},
     { MODKEY,                           XK_o,  spawn,            SHCMD("zen-browser")},
     { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
     { MODKEY,                           XK_y,  spawn,            SHCMD("clipcat-menu")},

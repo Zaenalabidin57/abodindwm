@@ -2,7 +2,7 @@
 
 xrdb merge ~/.Xresources &
 xbacklight -set 10 &
-xrandr --output HDMI-1 --left-of eDP-1
+#xrandr --output HDMI-1 --left-of eDP-1
 xrandr --output eDP-1 --set TearFree on
 nitrogen --restore
 #feh --bg-fill ~/Pictures/wollpeper/chne.jpeg &
