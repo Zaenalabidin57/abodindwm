@@ -41,8 +41,8 @@ static const int new_window_attach_on_end = 0; /*  1 means the new window will a
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
 
-static const char *fonts[]          = {"Monocraft Nerd Font:style:Light:size=10","Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12", "Noto Sans CJK JP:style=Regular:size=12", "Noto Sans JP Medium:style=Mediun:size=12", "FreeMono:style=Regular:size=12" };
-//static const char *fonts[]          = {"FreeMono:style:Regular:size=12"};
+//static const char *fonts[]          = {"Monocraft Nerd Font:style:Light:size=10","Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12", "Noto Sans CJK JP:style=Regular:size=12", "Noto Sans JP Medium:style=Mediun:size=12", "FreeMono:style=Regular:size=12" };
+static const char *fonts[]          = {"FreeMono:style:Regular:size=12"};
 
 // theme
 #include "themes/catppuccin.h"
@@ -175,15 +175,15 @@ static const Key keys[] = {
 
     { MODKEY,                           XK_d,       spawn,          SHCMD("rofi -show drun") },
     { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
-    // { MODKEY,                           XK_Return,  spawn,            SHCMD("st -g 80x24+0+300")},
-    { MODKEY,                           XK_Return,  spawn,            SHCMD("ghostty")},
+    { MODKEY,                           XK_Return,  spawn,            SHCMD("st -g 80x24+0+300")},
+    //{ MODKEY,                           XK_Return,  spawn,            SHCMD("ghostty")},
     { MODKEY,                           XK_o,  spawn,            SHCMD("zen-browser")},
     { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
     { MODKEY,                           XK_y,  spawn,            SHCMD("clipcat-menu")},
     { MODKEY,                           XK_m,  spawn,            SHCMD("neovide")},
     { MODKEY|ShiftMask,                 XK_e,  spawn,            SHCMD("st -e ~/exit.sh")},
     { MODKEY|ShiftMask,                 XK_g,  spawn,            SHCMD("xcolor | xclip")},
-    { MODKEY|ShiftMask,                 XK_p,  spawn,            SHCMD("i3lock-fancy-dualmonitor -p")},
+    { MODKEY|ShiftMask,                 XK_p,  spawn,            SHCMD("i3lock-fancy-multimonitor -p")},
 
     // toggle stuff
     { MODKEY,                           XK_p,       togglebar,      {0} },
@@ -291,7 +291,7 @@ static const Button buttons[] = {
     { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
     { ClkWinTitle,          0,              Button2,        zoom,           {0} },
-    { ClkStatusText,        0,              Button2,        spawn,          SHCMD("kitty") },
+    { ClkStatusText,        0,              Button2,        spawn,          SHCMD("st") },
 
     /* Keep movemouse? */
     /* { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} }, */
