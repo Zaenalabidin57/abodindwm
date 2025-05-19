@@ -1,2 +1,9 @@
 dwm
 dwm.o
+config.def.h.orig
+config.def.h.rej
+config.h
+dwm
+dwm.c.orig
+dwm.c.rej
+dwm.o
