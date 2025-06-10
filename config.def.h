@@ -10,16 +10,16 @@ static const unsigned int gappih    = 5;       /* horiz inner gap between window
 static const unsigned int gappiv    = 5;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 5;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 5;       /* vert outer gap between windows and screen edge */
-static const int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
+static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails,display systray on the 1st monitor,False: display systray on last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
-static const int showbar            = 0;        /* 0 means no bar */
+static const int showbar            = 1;        /* 0 means no bar */
 static const int toptab             = 1;        /* 0 means bottom tab */
 static const int showtab            = showtab_auto;
 static const int floatbar           = 1;/* 1 means the bar will float(don't have padding),0 means the bar have padding */
-static const int topbar             = 1;        /* 0 means bottom bar */
+static const int topbar             = 0;        /* 0 means bottom bar */
 static const int horizpadbar        = 5;
 static const int vertpadbar         = 11;
 static const int vertpadtab         = 35;
@@ -41,8 +41,8 @@ static const int new_window_attach_on_end = 0; /*  1 means the new window will a
 #define ICONSIZE 19   /* icon size */
 #define ICONSPACING 8 /* space between icon and title */
 
-//static const char *fonts[]          = {"Monocraft Nerd Font:style:Light:size=10","Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12", "Noto Sans CJK JP:style=Regular:size=12", "Noto Sans JP Medium:style=Mediun:size=12", "FreeMono:style=Regular:size=12" };
-static const char *fonts[]          = {"FreeMono:style:Regular:size=12"};
+static const char *fonts[]          = {"Monocraft Nerd Font:style:Light:size=11","Iosevka:style:medium:size=12" ,"JetBrainsMono Nerd Font Mono:style:medium:size=12"," ComicCodeLigaturesNerdFontComplete Nerd Font:style=Regular:size=12", "Noto Sans CJK JP:style=Regular:size=12", "Noto Sans JP Medium:style=Mediun:size=12", "FreeMono:style=Regular:size=12" };
+//static const char *fonts[]          = {"FreeMono:style:Regular:size=12"};
 
 // theme
 #include "themes/catppuccin.h"
@@ -94,8 +94,8 @@ static const Rule rules[] = {
      */
     /* class      instance    title       tags mask     iscentered   isfloating   monitor */
     { "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
-    { "zen-browser",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
-    { "zen-browser",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           -1 },
+    { "brave",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
+    { "brave",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           -1 },
     { "eww",      NULL,       NULL,       0,            0,           1,           -1 },
     { "pavucontrol",      NULL,       NULL,       0,            0,           1,           -1 },
     { "feh",      NULL,       NULL,       0,            0,           1,           -1 },
@@ -123,10 +123,10 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    { "><>",      NULL },    /* no layout function means floating behavior */
     { "[\\]",     dwindle },
-    { "[M]",      monocle },
+    { "><>",      NULL },    /* no layout function means floating behavior */
     { "[]=",      tile },    /* first entry is default */
+    { "[M]",      monocle },
     { "[@]",      spiral },
     { "H[]",      deck },
     { "TTT",      bstack },
@@ -177,13 +177,13 @@ static const Key keys[] = {
     { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
     { MODKEY,                           XK_Return,  spawn,            SHCMD("st -g 80x24+0+300")},
     //{ MODKEY,                           XK_Return,  spawn,            SHCMD("ghostty")},
-    { MODKEY,                           XK_o,  spawn,            SHCMD("zen-browser")},
+    { MODKEY,                           XK_o,  spawn,            SHCMD("brave")},
     { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
     { MODKEY,                           XK_y,  spawn,            SHCMD("clipcat-menu")},
     { MODKEY,                           XK_m,  spawn,            SHCMD("neovide")},
     { MODKEY|ShiftMask,                 XK_e,  spawn,            SHCMD("st -e ~/exit.sh")},
     { MODKEY|ShiftMask,                 XK_g,  spawn,            SHCMD("xcolor | xclip")},
-    { MODKEY|ShiftMask,                 XK_p,  spawn,            SHCMD("i3lock-fancy-multimonitor -p")},
+    { MODKEY|ShiftMask,                 XK_p,  spawn,            SHCMD("slock")},
 
     // toggle stuff
     { MODKEY,                           XK_p,       togglebar,      {0} },
