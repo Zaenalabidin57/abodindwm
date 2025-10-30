@@ -31,8 +31,8 @@ static const int colorfultag        = 1;        /* 0 means use SchemeSel for sel
 static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+5%",     NULL };
 static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%",     NULL };
 static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
-static const char *light_up[] = {"/usr/bin/brightnessctl", "s", "20+", NULL};
-static const char *light_down[] = {"/usr/bin/brightnessctl", "s", "20-", NULL};
+static const char *light_up[] = {"/usr/bin/brightnessctl", "s", "5%+", NULL};
+static const char *light_down[] = {"/usr/bin/brightnessctl", "s", "5%-", NULL};
 static const char *Ppause[] = {"/usr/bin/playerctl", "play-pause", NULL};
 static const char *Pplay[] = {"/usr/bin/playerctl", "play-pause", NULL};
 static const char *audionext[] = {"/usr/bin/playerctl", "next", NULL};
@@ -71,7 +71,7 @@ static const char *colors[][3]      = {
 /*static char *tags[] = {"", "", "", "", ""};*/
 static char *tags[] = {"1", "2", "3", "4", "5",};
 
-static const char* eww[] = { "youtube-music", NULL };
+static const char* eww[] = { "rofi", "-show", "drun", NULL };
 
 static const Launcher launchers[] = {
     /* command     name to display */
@@ -123,9 +123,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    { "[\\]",     dwindle },
-    { "><>",      NULL },    /* no layout function means floating behavior */
     { "[]=",      tile },    /* first entry is default */
+    { "><>",      NULL },    /* no layout function means floating behavior */
+    { "[\\]",     dwindle },
     { "[M]",      monocle },
     { "[@]",      spiral },
     { "H[]",      deck },
@@ -177,8 +177,9 @@ static const Key keys[] = {
     { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
     { MODKEY,                           XK_Return,  spawn,            SHCMD("st -g 80x24+0+300")},
     //{ MODKEY,                           XK_Return,  spawn,            SHCMD("ghostty")},
-    { MODKEY,                           XK_o,  spawn,            SHCMD("brave")},
+    { MODKEY,                           XK_o,  spawn,            SHCMD("qutebrowser")},
     { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
+    { MODKEY|ShiftMask,                           XK_n,  spawn,            SHCMD("st -e yazi")},
     { MODKEY,                           XK_y,  spawn,            SHCMD("clipcat-menu")},
     { MODKEY,                           XK_m,  spawn,            SHCMD("neovide")},
     { MODKEY|ShiftMask,                 XK_e,  spawn,            SHCMD("st -e ~/exit.sh")},
@@ -187,9 +188,10 @@ static const Key keys[] = {
 
     // toggle stuff
     { MODKEY,                           XK_p,       togglebar,      {0} },
-    { MODKEY|ControlMask,               XK_t,       togglegaps,     {0} },
+    { MODKEY,               XK_g,       togglegaps,     {0} },
     { MODKEY|ShiftMask,                 XK_space,   togglefloating, {0} },
-    { MODKEY,                           XK_f,       togglefullscr,  {0} },
+    { MODKEY,                           XK_f,       zoom,  {0} },
+    { MODKEY|ShiftMask,                           XK_f,       togglefullscr,  {0} },
 
     { MODKEY|ControlMask,               XK_w,       tabmode,        { -1 } },
     { MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
@@ -213,7 +215,9 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,                 XK_k,       movestack,      {.i = -1 } },
     { MODKEY|ShiftMask,                 XK_Return,  zoom,           {0} },
     { MODKEY,                           XK_Tab,     view,           {0} },
-    { Mod1Mask,                         XK_Tab,     spawn,           SHCMD("rofi -show window") },
+//{ Mod1Mask,                         XK_Tab,     spawn,           SHCMD("rofi -show window") },
+    { Mod1Mask,                         XK_Tab,     focussame, {.i = +1}},
+    { Mod1Mask|ShiftMask,                         XK_Tab,     focussame, {.i = -1}},
 
     // overall gaps
     { MODKEY|ControlMask,               XK_i,       incrgaps,       {.i = +1 } },
@@ -258,7 +262,7 @@ static const Key keys[] = {
     // change border size
     { MODKEY|ShiftMask,                 XK_minus,   setborderpx,    {.i = -1 } },
     { MODKEY|ShiftMask,                 XK_plus,       setborderpx,    {.i = +1 } },
-    { MODKEY|ShiftMask,                 XK_w,       setborderpx,    {.i = default_border } },
+    //{ MODKEY|ShiftMask,                 XK_w,       setborderpx,    {.i = default_border } },
 
     // kill dwm
     { MODKEY|ControlMask,               XK_q,       spawn,        SHCMD("killall bar.sh chadwm") },
