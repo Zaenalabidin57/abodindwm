@@ -6,6 +6,7 @@
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int default_border = 0;   /* to switch back to default border after dynamic border resizing via keybinds */
 static const unsigned int snap      = 5;       /* snap pixel */
+static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 5;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 5;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 5;       /* horiz outer gap between windows and screen edge */
@@ -92,22 +93,28 @@ static const Rule rules[] = {
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class      instance    title       tags mask     iscentered   isfloating   monitor */
-    { "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
-    { "brave",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
-    { "brave",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           -1 },
-    { "eww",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "pavucontrol",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "feh",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "imv",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "imv-dir",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "solanum",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "Nitrogen",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "YouTube Music",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "easyeffects",      NULL,       NULL,       0,            0,           1,           -1 },
-    { "photoshop.exe",      "photoshop.exe",       NULL,       0,            0,           0,           -1 },
-    { "mpv",      "gl",       "rrat.mp4 - mpv",       0,            0,           0,           -1 },
-    { "mpv",      "gl",       "nene.mp4 - mpv",       0,            0,           0,           1 },
+    /* class     instance  title           tags mask  iscentered isfloating  isterminal  noswallow  monitor */
+    { "Gimp",     NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "brave",  NULL,       NULL,       1 << 8,       0,           0,           0,          -1,        -1 },
+    { "brave",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           0,          -1,        -1 },
+    { "eww",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "pavucontrol",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "feh",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "imv",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "imv-dir",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "solanum",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "Nitrogen",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "YouTube Music",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "easyeffects",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
+    { "photoshop.exe",      "photoshop.exe",       NULL,       0,            0,           0,           0,           0,        -1 },
+    { "mpv",      "gl",       "rrat.mp4 - mpv",       0,            0,           0,           0,           0,        -1 },
+    { "mpv",      "gl",       "nene.mp4 - mpv",       0,            0,           0,           0,           1,        -1 },
+    { "st",      NULL,       NULL,       0,            0,           0,           1,           0,        -1 },
+    { "St",      NULL,       NULL,       0,            0,           0,           1,           0,        -1 },
+    { "tabbed",      NULL,       NULL,       0,            0,           0,           1,           0,        -1 },
+    { "St",      NULL,       "fish",       0,            0,           1,           1,           0,        -1 },
+    { "ghostty",      NULL,       NULL,       0,            0,           0,           1,           0,        -1 },
+    { NULL,      NULL,       "Event Tester", 0,            0,           0,           0,           1,        -1 }, /* xev */
 
 };
 
@@ -125,9 +132,9 @@ static const Layout layouts[] = {
     /* symbol     arrange function */
     { "[]=",      tile },    /* first entry is default */
     { "><>",      NULL },    /* no layout function means floating behavior */
-    { "[\\]",     dwindle },
     { "[M]",      monocle },
     { "[@]",      spiral },
+    { "[\\]",     dwindle },
     { "H[]",      deck },
     { "TTT",      bstack },
     { "===",      bstackhoriz },
@@ -175,11 +182,12 @@ static const Key keys[] = {
 
     { MODKEY,                           XK_d,       spawn,          SHCMD("rofi -show drun") },
     { MODKEY,                           XK_w,       spawn,          SHCMD("rofi -modi emoji -show emoji") },
-    { MODKEY,                           XK_Return,  spawn,            SHCMD("st -g 80x24+0+300")},
+    { MODKEY,                           XK_Return,  spawn,            SHCMD("tabbed -c -r 2 st -w ''")},
+    { MODKEY|ShiftMask,                           XK_Return,  spawn,            SHCMD("st -T fish")},
     //{ MODKEY,                           XK_Return,  spawn,            SHCMD("ghostty")},
     { MODKEY,                           XK_o,  spawn,            SHCMD("qutebrowser")},
-    { MODKEY,                           XK_n,  spawn,            SHCMD("thunar")},
-    { MODKEY|ShiftMask,                           XK_n,  spawn,            SHCMD("st -e yazi")},
+    { MODKEY,                           XK_n,  spawn,            SHCMD("st -e yazi")},
+    { MODKEY|ShiftMask,                           XK_n,  spawn,            SHCMD("thunar")},
     { MODKEY,                           XK_y,  spawn,            SHCMD("clipcat-menu")},
     { MODKEY,                           XK_m,  spawn,            SHCMD("neovide")},
     { MODKEY|ShiftMask,                 XK_e,  spawn,            SHCMD("st -e ~/exit.sh")},
@@ -197,7 +205,7 @@ static const Key keys[] = {
     { MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
     { MODKEY,                           XK_k,       focusstack,     {.i = -1 } },
     { MODKEY,                           XK_i,       incnmaster,     {.i = +1 } },
-    { MODKEY,                           XK_d,       incnmaster,     {.i = -1 } },
+    //{ MODKEY,                           XK_d,       incnmaster,     {.i = -1 } },
 
     // shift view
     { MODKEY|ControlMask,                           XK_Left,    shiftview,      {.i = -1 } },
@@ -213,10 +221,9 @@ static const Key keys[] = {
 
     { MODKEY|ShiftMask,                 XK_j,       movestack,      {.i = +1 } },
     { MODKEY|ShiftMask,                 XK_k,       movestack,      {.i = -1 } },
-    { MODKEY|ShiftMask,                 XK_Return,  zoom,           {0} },
     { MODKEY,                           XK_Tab,     view,           {0} },
-//{ Mod1Mask,                         XK_Tab,     spawn,           SHCMD("rofi -show window") },
-    { Mod1Mask,                         XK_Tab,     focussame, {.i = +1}},
+{ Mod1Mask,                         XK_Tab,     spawn,           SHCMD("rofi -show window") },
+    //{ Mod1Mask,                         XK_Tab,     focussame, {.i = +1}},
     { Mod1Mask|ShiftMask,                         XK_Tab,     focussame, {.i = -1}},
 
     // overall gaps
@@ -245,7 +252,7 @@ static const Key keys[] = {
 
     // layout
     { MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },
-    { MODKEY|ShiftMask,                 XK_f,       setlayout,      {.v = &layouts[1]} },
+    //{ MODKEY|ShiftMask,                 XK_f,       setlayout,      {.v = &layouts[1]} },
     //{ MODKEY,                           XK_m,       setlayout,      {.v = &layouts[2]} },
     { MODKEY|ControlMask,               XK_g,       setlayout,      {.v = &layouts[10]} },
     { MODKEY|ControlMask|ShiftMask,     XK_t,       setlayout,      {.v = &layouts[13]} },
