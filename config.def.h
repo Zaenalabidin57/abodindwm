@@ -3,14 +3,14 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int default_border = 0;   /* to switch back to default border after dynamic border resizing via keybinds */
 static const unsigned int snap      = 5;       /* snap pixel */
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
-static const unsigned int gappih    = 5;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 5;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 5;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 5;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
@@ -46,7 +46,8 @@ static const char *fonts[]          = {"Monocraft Nerd Font:style:Light:size=11"
 //static const char *fonts[]          = {"FreeMono:style:Regular:size=12"};
 
 // theme
-#include "themes/catppuccin.h"
+//#include "themes/catppuccin.h"
+#include "themes/bored.h"
 //#include "themes/dracula.h"
 
 static const char *colors[][3]      = {
@@ -62,8 +63,8 @@ static const char *colors[][3]      = {
     [SchemeTag3]       = { orange,  black,  black },
     [SchemeTag4]       = { green,   black,  black },
     [SchemeTag5]       = { pink,    black,  black },
-    [SchemeLayout]     = { green,   black,  black },
-    [SchemeBtnPrev]    = { green,   black,  black },
+    [SchemeLayout]     = { blue,   black,  black },
+    [SchemeBtnPrev]    = { blue,   black,  black },
     [SchemeBtnNext]    = { yellow,  black,  black },
     [SchemeBtnClose]   = { red,     black,  black },
 };
@@ -95,8 +96,8 @@ static const Rule rules[] = {
      */
     /* class     instance  title           tags mask  iscentered isfloating  isterminal  noswallow  monitor */
     { "Gimp",     NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
-    { "brave",  NULL,       NULL,       1 << 8,       0,           0,           0,          -1,        -1 },
-    { "brave",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           0,          -1,        -1 },
+    { "brave",  NULL,       NULL,       1 << 8,       0,           0,           0,          0,        -1 },
+    { "brave",  NULL,       "Picture-in-Picture",       1 << 8,       0,           1,           0,          0,        -1 },
     { "eww",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
     { "pavucontrol",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
     { "feh",      NULL,       NULL,       0,            0,           1,           0,           0,        -1 },
